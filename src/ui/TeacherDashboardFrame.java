@@ -2,6 +2,8 @@ package ui;
 
 import model.Question;
 import model.QuestionBank;
+import model.ResultStore;
+import model.StudentResult;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -25,6 +27,7 @@ public class TeacherDashboardFrame extends BaseFrame {
     private JButton deleteQuestionBtn;
     private JButton addTopicBtn;
     private JButton deleteTopicBtn;
+    private JButton viewResultsBtn;
     private JButton logoutBtn;
     private JLabel statsLabel;
 
@@ -142,6 +145,10 @@ public class TeacherDashboardFrame extends BaseFrame {
         deleteQuestionBtn.setBounds(395, 548, 170, 40);
         bgPanel.add(deleteQuestionBtn);
 
+        viewResultsBtn = createStyledButton("View Results", ACCENT_WARNING, Color.WHITE);
+        viewResultsBtn.setBounds(580, 548, 170, 40);
+        bgPanel.add(viewResultsBtn);
+
         updateStats();
     }
 
@@ -153,6 +160,7 @@ public class TeacherDashboardFrame extends BaseFrame {
         deleteQuestionBtn.addActionListener(e -> deleteSelectedQuestion());
         addTopicBtn.addActionListener(e -> openAddTopicDialog());
         deleteTopicBtn.addActionListener(e -> deleteSelectedTopic());
+        viewResultsBtn.addActionListener(e -> openResultsDialog());
 
         logoutBtn.addActionListener(e -> {
             int choice = JOptionPane.showConfirmDialog(this,
@@ -422,5 +430,152 @@ public class TeacherDashboardFrame extends BaseFrame {
             for (int i = 0; i < 4; i++) options[i] = optionFields[i].getText().trim();
             return new Question(questionField.getText().trim(), options, correctCombo.getSelectedIndex());
         }
+    }
+
+    // ── Student Results Dialog ───────────────────────────────────────
+    private void openResultsDialog() {
+        JDialog dialog = new JDialog(this, "Student Results", true);
+        dialog.setSize(750, 500);
+        dialog.setLocationRelativeTo(this);
+        dialog.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(BG_PRIMARY);
+        dialog.setContentPane(panel);
+
+        JLabel title = createLabel("Student Quiz Results", FONT_SUBTITLE, TEXT_PRIMARY);
+        title.setBounds(20, 15, 300, 24);
+        panel.add(title);
+
+        // Filter combo
+        JLabel filterLabel = createLabel("Filter by topic:", FONT_SMALL, TEXT_SECONDARY);
+        filterLabel.setBounds(420, 18, 100, 16);
+        panel.add(filterLabel);
+
+        List<String> topics = QuestionBank.getAvailableTopics();
+        String[] filterOptions = new String[topics.size() + 1];
+        filterOptions[0] = "All Topics";
+        for (int i = 0; i < topics.size(); i++) {
+            filterOptions[i + 1] = topics.get(i);
+        }
+        JComboBox<String> filterCombo = new JComboBox<>(filterOptions);
+        filterCombo.setFont(FONT_SMALL);
+        filterCombo.setBackground(Color.WHITE);
+        filterCombo.setBounds(520, 14, 200, 26);
+        panel.add(filterCombo);
+
+        // Results table
+        String[] columns = {"#", "Student", "Topic", "Score", "Percentage", "Status", "Date/Time"};
+        DefaultTableModel resultsTableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable resultsTable = new JTable(resultsTableModel);
+        resultsTable.setFont(FONT_SMALL);
+        resultsTable.setForeground(TEXT_PRIMARY);
+        resultsTable.setBackground(Color.WHITE);
+        resultsTable.setGridColor(BORDER_COLOR);
+        resultsTable.setSelectionBackground(ACCENT_PRIMARY);
+        resultsTable.setSelectionForeground(Color.WHITE);
+        resultsTable.setRowHeight(30);
+        resultsTable.setShowGrid(true);
+        resultsTable.setIntercellSpacing(new Dimension(1, 1));
+
+        JTableHeader header = resultsTable.getTableHeader();
+        header.setFont(FONT_BODY_BOLD);
+        header.setBackground(BG_CARD);
+        header.setForeground(TEXT_PRIMARY);
+        header.setBorder(BorderFactory.createLineBorder(BORDER_COLOR));
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 34));
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        resultsTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        resultsTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        resultsTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+        resultsTable.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+
+        resultsTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+        resultsTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+        resultsTable.getColumnModel().getColumn(2).setPreferredWidth(130);
+        resultsTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+        resultsTable.getColumnModel().getColumn(4).setPreferredWidth(80);
+        resultsTable.getColumnModel().getColumn(5).setPreferredWidth(60);
+        resultsTable.getColumnModel().getColumn(6).setPreferredWidth(140);
+
+        // Custom cell renderer for pass/fail status coloring
+        resultsTable.getColumnModel().getColumn(5).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value,
+                    isSelected, hasFocus, row, column);
+                setHorizontalAlignment(SwingConstants.CENTER);
+                if (!isSelected) {
+                    if ("PASSED".equals(value)) {
+                        c.setForeground(ACCENT_SUCCESS);
+                    } else {
+                        c.setForeground(ACCENT_DANGER);
+                    }
+                }
+                return c;
+            }
+        });
+
+        JScrollPane scrollPane = new JScrollPane(resultsTable);
+        scrollPane.setBounds(20, 50, 700, 350);
+        scrollPane.setBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1));
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        panel.add(scrollPane);
+
+        // Summary label
+        JLabel summaryLabel = createLabel("", FONT_SMALL, TEXT_SECONDARY);
+        summaryLabel.setBounds(20, 410, 500, 18);
+        panel.add(summaryLabel);
+
+        // Close button
+        JButton closeBtn = createStyledButton("Close", BG_CARD, TEXT_PRIMARY);
+        closeBtn.setBounds(610, 410, 110, 36);
+        panel.add(closeBtn);
+        closeBtn.addActionListener(e -> dialog.dispose());
+
+        // Load results helper
+        Runnable loadResults = () -> {
+            resultsTableModel.setRowCount(0);
+            String selectedFilter = (String) filterCombo.getSelectedItem();
+            List<StudentResult> resultsList;
+            if ("All Topics".equals(selectedFilter)) {
+                resultsList = ResultStore.getAllResults();
+            } else {
+                resultsList = ResultStore.getResultsByTopic(selectedFilter);
+            }
+            for (int i = 0; i < resultsList.size(); i++) {
+                StudentResult r = resultsList.get(i);
+                resultsTableModel.addRow(new Object[]{
+                    (i + 1),
+                    r.getStudentName(),
+                    r.getTopic(),
+                    r.getScore() + "/" + r.getTotalQuestions(),
+                    String.format("%.0f%%", r.getPercentage()),
+                    r.isPassed() ? "PASSED" : "FAILED",
+                    r.getTimestamp()
+                });
+            }
+            int total = resultsList.size();
+            long passed = resultsList.stream().filter(StudentResult::isPassed).count();
+            summaryLabel.setText("Total attempts: " + total + "   |   Passed: " + passed
+                + "   |   Failed: " + (total - passed));
+        };
+
+        // Initial load
+        loadResults.run();
+
+        // Filter listener
+        filterCombo.addActionListener(e -> loadResults.run());
+
+        dialog.setVisible(true);
     }
 }

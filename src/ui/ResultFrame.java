@@ -2,6 +2,8 @@ package ui;
 
 import logic.QuizManager;
 import model.Question;
+import model.ResultStore;
+import model.StudentResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,7 @@ public class ResultFrame extends BaseFrame {
 
     private QuizManager quizManager;
     private boolean showReviewOnStart;
+    private String studentName;
     private JPanel bgPanel;
     private JPanel reviewContainer;
     private JScrollPane scrollPane;
@@ -22,10 +25,22 @@ public class ResultFrame extends BaseFrame {
     private JButton exitButton;
     private boolean reviewVisible = false;
 
-    public ResultFrame(QuizManager quizManager, boolean showReview) {
+    public ResultFrame(QuizManager quizManager, boolean showReview, String studentName) {
         super("Quiz Results", 660, 640);
         this.quizManager = quizManager;
         this.showReviewOnStart = showReview;
+        this.studentName = studentName;
+
+        // Save the result to the store so the teacher can view it
+        ResultStore.addResult(new StudentResult(
+            studentName,
+            quizManager.getCurrentTopic(),
+            quizManager.calculateScore(),
+            quizManager.getTotalQuestions(),
+            quizManager.getPercentage(),
+            quizManager.isPassed()
+        ));
+
         initializeUI();
         setupListeners();
         if (showReviewOnStart) {
@@ -192,7 +207,7 @@ public class ResultFrame extends BaseFrame {
         restartButton.addActionListener(e -> {
             quizManager.resetQuiz();
             dispose();
-            new QuizFrame(quizManager.getCurrentTopic());
+            new QuizFrame(quizManager.getCurrentTopic(), studentName);
         });
 
         exitButton.addActionListener(e -> {

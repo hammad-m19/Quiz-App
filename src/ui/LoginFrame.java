@@ -131,7 +131,7 @@ public class LoginFrame extends BaseFrame {
             case Validator.ROLE_STUDENT:
                 String selectedTopic = (String) topicCombo.getSelectedItem();
                 dispose();
-                new QuizFrame(selectedTopic);
+                new QuizFrame(selectedTopic, username);
                 break;
             case Validator.ROLE_TEACHER:
                 dispose();

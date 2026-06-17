@@ -17,6 +17,7 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
 
     private QuizManager quizManager;
     private Timer timer;
+    private String studentName;
 
     private JPanel bgPanel;
     private JLabel topicLabel;
@@ -29,8 +30,9 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
     private JButton nextButton;
     private JButton exitButton;
 
-    public QuizFrame(String topic) {
+    public QuizFrame(String topic, String studentName) {
         super("Quiz — " + topic, 660, 580);
+        this.studentName = studentName;
         quizManager = new QuizManager();
         quizManager.loadQuestions(topic);
         optionButtons = new JButton[4];
@@ -276,6 +278,6 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
     public void showResult(boolean showReview) {
         stopCurrentTimer();
         dispose();
-        new ResultFrame(quizManager, showReview);
+        new ResultFrame(quizManager, showReview, studentName);
     }
 }
