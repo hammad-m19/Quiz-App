@@ -30,13 +30,12 @@ public class ResultFrame extends BaseFrame {
 
         // Save the result to the store so the teacher can view it
         ResultStore.addResult(new StudentResult(
-            studentName,
-            quizManager.getCurrentTopic(),
-            quizManager.calculateScore(),
-            quizManager.getTotalQuestions(),
-            quizManager.getPercentage(),
-            quizManager.isPassed()
-        ));
+                studentName,
+                quizManager.getCurrentTopic(),
+                quizManager.calculateScore(),
+                quizManager.getTotalQuestions(),
+                quizManager.getPercentage(),
+                quizManager.isPassed()));
 
         initializeUI();
         setupListeners();
@@ -78,8 +77,8 @@ public class ResultFrame extends BaseFrame {
         bgPanel.add(pctCard);
 
         JPanel statusCard = createStatCard("Status",
-            passed ? "PASSED" : "FAILED",
-            passed ? ACCENT_SUCCESS : ACCENT_DANGER, 440, 95);
+                passed ? "PASSED" : "FAILED",
+                passed ? ACCENT_SUCCESS : ACCENT_DANGER, 440, 95);
         bgPanel.add(statusCard);
 
         long unanswered = quizManager.getQuestions().stream().filter(q -> !q.isAnswered()).count();
@@ -137,9 +136,8 @@ public class ResultFrame extends BaseFrame {
             qPanel.setLayout(new BoxLayout(qPanel, BoxLayout.Y_AXIS));
             qPanel.setBackground(Color.WHITE);
             qPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER_COLOR, 1),
-                BorderFactory.createEmptyBorder(10, 14, 10, 14)
-            ));
+                    BorderFactory.createLineBorder(BORDER_COLOR, 1),
+                    BorderFactory.createEmptyBorder(10, 14, 10, 14)));
             qPanel.setMaximumSize(new Dimension(590, 200));
 
             JLabel qLabel = new JLabel("<html><b>Q" + (i + 1) + ".</b> " + q.getQuestionText() + "</html>");
@@ -150,7 +148,7 @@ public class ResultFrame extends BaseFrame {
             qPanel.add(Box.createVerticalStrut(5));
 
             String[] options = q.getOptions();
-            String[] letters = {"A", "B", "C", "D"};
+            String[] letters = { "A", "B", "C", "D" };
             for (int j = 0; j < options.length; j++) {
                 String prefix = letters[j] + ". " + options[j];
                 JLabel optLabel = new JLabel();
@@ -204,8 +202,8 @@ public class ResultFrame extends BaseFrame {
 
         exitButton.addActionListener(e -> {
             int choice = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to exit?", "Exit",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    "Are you sure you want to exit?", "Exit",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (choice == JOptionPane.YES_OPTION) {
                 dispose();
                 new LoginFrame();
