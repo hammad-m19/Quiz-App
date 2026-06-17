@@ -9,7 +9,8 @@ import java.util.List;
 
 /**
  * Clean, simple login screen — username, password, topic selection.
- * Routes students to QuizFrame and teachers to TeacherDashboardFrame.
+ * Routes students to QuizFrame, teachers to TeacherDashboardFrame,
+ * and admins to AdminDashboardFrame.
  */
 public class LoginFrame extends BaseFrame {
 
@@ -20,7 +21,7 @@ public class LoginFrame extends BaseFrame {
     private JLabel errorLabel;
 
     public LoginFrame() {
-        super("Student Quiz Application", 460, 580);
+        super("Student Quiz Application", 460, 600);
         initializeUI();
         setupListeners();
         setVisible(true);
@@ -32,7 +33,7 @@ public class LoginFrame extends BaseFrame {
         JPanel bg = new JPanel();
         bg.setLayout(null);
         bg.setBackground(BG_PRIMARY);
-        bg.setBounds(0, 0, 460, 580);
+        bg.setBounds(0, 0, 460, 600);
         setContentPane(bg);
 
         // ── Title ──────────────────────────────────────────────────
@@ -104,6 +105,11 @@ public class LoginFrame extends BaseFrame {
         hint2.setBounds(25, 348, 310, 16);
         hint2.setHorizontalAlignment(SwingConstants.CENTER);
         card.add(hint2);
+
+        JLabel hint3 = createLabel("Admin: admin / admin123", FONT_SMALL, TEXT_MUTED);
+        hint3.setBounds(25, 366, 310, 16);
+        hint3.setHorizontalAlignment(SwingConstants.CENTER);
+        card.add(hint3);
     }
 
     @Override
@@ -136,6 +142,10 @@ public class LoginFrame extends BaseFrame {
             case Validator.ROLE_TEACHER:
                 dispose();
                 new TeacherDashboardFrame();
+                break;
+            case Validator.ROLE_ADMIN:
+                dispose();
+                new AdminDashboardFrame(username.trim());
                 break;
             default:
                 showError("Invalid username or password.");
