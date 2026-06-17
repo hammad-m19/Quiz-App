@@ -8,9 +8,6 @@ import model.Question;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Clean quiz interface — question display, 4 option buttons, timer bar, navigation.
- */
 public class QuizFrame extends BaseFrame implements TimerCallback {
 
     private static final int SECONDS_PER_QUESTION = 15;
@@ -51,7 +48,6 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
         bgPanel.setBounds(0, 0, 660, 580);
         setContentPane(bgPanel);
 
-        // ── Top Bar ────────────────────────────────────────────────
         topicLabel = createLabel("", FONT_SUBTITLE, ACCENT_PRIMARY);
         topicLabel.setBounds(25, 12, 300, 24);
         bgPanel.add(topicLabel);
@@ -74,7 +70,6 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
         timerBar.setBorderPainted(false);
         bgPanel.add(timerBar);
 
-        // ── Question Card ──────────────────────────────────────────
         JPanel questionCard = createCardPanel();
         questionCard.setBounds(25, 80, 610, 90);
         bgPanel.add(questionCard);
@@ -86,8 +81,7 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
         questionLabel.setVerticalAlignment(SwingConstants.CENTER);
         questionCard.add(questionLabel);
 
-        // ── Option Buttons ─────────────────────────────────────────
-        String[] labels = {"A", "B", "C", "D"};
+        String[] labels = { "A", "B", "C", "D" };
         for (int i = 0; i < 4; i++) {
             final int idx = i;
             optionButtons[i] = new JButton();
@@ -113,6 +107,7 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
                         optionButtons[idx].setBackground(BG_CARD);
                     }
                 }
+
                 @Override
                 public void mouseExited(java.awt.event.MouseEvent e) {
                     Question q = quizManager.getCurrentQuestion();
@@ -123,7 +118,6 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
             });
         }
 
-        // ── Navigation Buttons ─────────────────────────────────────
         prevButton = createStyledButton("Previous", BG_CARD, TEXT_PRIMARY);
         prevButton.setBounds(25, 460, 140, 40);
         bgPanel.add(prevButton);
@@ -168,8 +162,8 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
 
         exitButton.addActionListener(e -> {
             int choice = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to exit the quiz?\nYour progress will be lost.",
-                "Exit Quiz", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    "Are you sure you want to exit the quiz?\nYour progress will be lost.",
+                    "Exit Quiz", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (choice == JOptionPane.YES_OPTION) {
                 stopCurrentTimer();
                 dispose();
@@ -180,14 +174,15 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
 
     public void showQuestion(int index) {
         Question q = quizManager.getCurrentQuestion();
-        if (q == null) return;
+        if (q == null)
+            return;
 
         topicLabel.setText(quizManager.getCurrentTopic());
         progressLabel.setText("Question " + (index + 1) + " of " + quizManager.getTotalQuestions());
 
         questionLabel.setText("<html><body style='width:540px'>" + q.getQuestionText() + "</body></html>");
 
-        String[] letters = {"A", "B", "C", "D"};
+        String[] letters = { "A", "B", "C", "D" };
         String[] opts = q.getOptions();
         for (int i = 0; i < 4; i++) {
             optionButtons[i].setText("   " + letters[i] + ".  " + opts[i]);

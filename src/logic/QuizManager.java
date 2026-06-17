@@ -5,33 +5,23 @@ import model.QuestionBank;
 
 import java.util.List;
 
-/**
- * Manages the active quiz session — loaded questions, navigation,
- * answer tracking, and score calculation.
- */
 public class QuizManager {
 
     private List<Question> questions;
     private int currentIndex;
     private String currentTopic;
 
-    // ── Constructor ──────────────────────────────────────────────────
     public QuizManager() {
         this.currentIndex = 0;
     }
 
-    // ── Load Questions ───────────────────────────────────────────────
 
-    /**
-     * Loads a shuffled set of questions for the given topic.
-     */
     public void loadQuestions(String topic) {
         this.currentTopic = topic;
         this.questions = QuestionBank.getQuestionsByTopic(topic);
         this.currentIndex = 0;
     }
 
-    // ── Navigation ───────────────────────────────────────────────────
 
     public Question getCurrentQuestion() {
         if (questions == null || questions.isEmpty()) return null;
@@ -66,11 +56,7 @@ public class QuizManager {
         }
     }
 
-    // ── Answer Handling ──────────────────────────────────────────────
 
-    /**
-     * Records the user's selected option for the current question.
-     */
     public void selectAnswer(int optionIndex) {
         Question q = getCurrentQuestion();
         if (q != null) {
@@ -78,19 +64,12 @@ public class QuizManager {
         }
     }
 
-    /**
-     * Checks if the given option index is correct for the current question.
-     */
     public boolean checkAnswer(int selected) {
         Question q = getCurrentQuestion();
         return q != null && q.getCorrectOptionIndex() == selected;
     }
 
-    // ── Score Calculation ────────────────────────────────────────────
 
-    /**
-     * Computes total correct answers across all questions.
-     */
     public int calculateScore() {
         if (questions == null) return 0;
         int score = 0;
@@ -102,26 +81,16 @@ public class QuizManager {
         return score;
     }
 
-    /**
-     * Returns the score as a percentage.
-     */
     public double getPercentage() {
         if (questions == null || questions.isEmpty()) return 0;
         return (calculateScore() * 100.0) / questions.size();
     }
 
-    /**
-     * Returns true if the user scored 50% or above.
-     */
     public boolean isPassed() {
         return getPercentage() >= 50.0;
     }
 
-    // ── Reset ────────────────────────────────────────────────────────
 
-    /**
-     * Resets all state to allow retaking the quiz.
-     */
     public void resetQuiz() {
         if (questions != null) {
             for (Question q : questions) {
@@ -131,7 +100,6 @@ public class QuizManager {
         currentIndex = 0;
     }
 
-    // ── Getters ──────────────────────────────────────────────────────
 
     public List<Question> getQuestions() {
         return questions;

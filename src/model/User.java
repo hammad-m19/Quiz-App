@@ -1,9 +1,5 @@
 package model;
 
-/**
- * Represents an application user with credentials and role.
- * Demonstrates OOP Concept: Encapsulation — private fields with getters/setters.
- */
 public class User {
 
     private String username;

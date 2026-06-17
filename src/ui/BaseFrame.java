@@ -3,16 +3,8 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Abstract base class for all application frames.
- * Demonstrates OOP Concepts: Abstraction & Inheritance.
- *
- * Provides a shared clean light-themed design system with high-contrast,
- * easily readable colors.
- */
 public abstract class BaseFrame extends JFrame {
 
-    // ── Design System — Color Palette (Clean Light Theme) ───────────
     protected static final Color BG_PRIMARY      = new Color(245, 247, 250);   // soft off-white
     protected static final Color BG_SECONDARY    = Color.WHITE;                // pure white cards
     protected static final Color BG_CARD         = new Color(237, 241, 247);   // light blue-gray
@@ -26,7 +18,6 @@ public abstract class BaseFrame extends JFrame {
     protected static final Color TEXT_MUTED       = new Color(140, 140, 140);   // medium gray
     protected static final Color BORDER_COLOR     = new Color(210, 215, 222);   // soft border
 
-    // ── Design System — Fonts ───────────────────────────────────────
     protected static final Font FONT_TITLE     = new Font("SansSerif", Font.BOLD, 26);
     protected static final Font FONT_SUBTITLE  = new Font("SansSerif", Font.BOLD, 18);
     protected static final Font FONT_BODY      = new Font("SansSerif", Font.PLAIN, 15);
@@ -34,7 +25,6 @@ public abstract class BaseFrame extends JFrame {
     protected static final Font FONT_SMALL     = new Font("SansSerif", Font.PLAIN, 12);
     protected static final Font FONT_BUTTON    = new Font("SansSerif", Font.BOLD, 14);
 
-    // ── Constructor ─────────────────────────────────────────────────
     public BaseFrame(String title, int width, int height) {
         setTitle(title);
         setSize(width, height);
@@ -45,11 +35,9 @@ public abstract class BaseFrame extends JFrame {
         setLayout(null);
     }
 
-    // ── Abstract lifecycle hooks ────────────────────────────────────
     protected abstract void initializeUI();
     protected abstract void setupListeners();
 
-    // ── Helper: Create a styled JButton ─────────────────────────────
     protected JButton createStyledButton(String text, Color bgColor, Color fgColor) {
         JButton button = new JButton(text);
         button.setFont(FONT_BUTTON);
@@ -76,7 +64,6 @@ public abstract class BaseFrame extends JFrame {
         return button;
     }
 
-    // ── Helper: Create a styled JLabel ──────────────────────────────
     protected JLabel createLabel(String text, Font font, Color color) {
         JLabel label = new JLabel(text);
         label.setFont(font);
@@ -84,7 +71,6 @@ public abstract class BaseFrame extends JFrame {
         return label;
     }
 
-    // ── Helper: Create a card panel with border ─────────────────────
     protected JPanel createCardPanel() {
         JPanel panel = new JPanel();
         panel.setBackground(BG_SECONDARY);
@@ -93,7 +79,6 @@ public abstract class BaseFrame extends JFrame {
         return panel;
     }
 
-    // ── Helper: Create a styled text field ──────────────────────────
     protected JTextField createStyledTextField() {
         JTextField field = new JTextField();
         field.setFont(FONT_BODY);
@@ -107,7 +92,6 @@ public abstract class BaseFrame extends JFrame {
         return field;
     }
 
-    // ── Helper: Create a styled password field ──────────────────────
     protected JPasswordField createStyledPasswordField() {
         JPasswordField field = new JPasswordField();
         field.setFont(FONT_BODY);

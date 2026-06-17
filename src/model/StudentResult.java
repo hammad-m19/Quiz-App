@@ -3,10 +3,6 @@ package model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Stores the result of a single quiz attempt by a student.
- * Demonstrates OOP Concept: Encapsulation — private fields with getters.
- */
 public class StudentResult {
 
     private String studentName;
@@ -17,7 +13,6 @@ public class StudentResult {
     private boolean passed;
     private String timestamp;
 
-    // ── Constructor ──────────────────────────────────────────────────
     public StudentResult(String studentName, String topic, int score,
                          int totalQuestions, double percentage, boolean passed) {
         this.studentName = studentName;
@@ -30,7 +25,6 @@ public class StudentResult {
             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    // ── Getters ──────────────────────────────────────────────────────
     public String getStudentName() { return studentName; }
     public String getTopic() { return topic; }
     public int getScore() { return score; }

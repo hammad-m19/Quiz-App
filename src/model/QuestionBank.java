@@ -6,14 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Stores all quiz questions in-memory using ArrayLists, grouped by topic.
- * Now supports mutable operations (add, edit, delete) for the Teacher Portal.
- * Acts as an in-memory data repository (no database needed).
- */
 public class QuestionBank {
 
-    // ── Mutable storage — initialized once with defaults ────────────
     private static final Map<String, List<Question>> topicQuestions = new HashMap<>();
 
     static {
@@ -23,7 +17,6 @@ public class QuestionBank {
 
     private static void loadDefaults() {
 
-        // ── Core Java ──────────────────────────────────────────────
         List<Question> java = new ArrayList<>();
         java.add(new Question(
             "Which keyword is used to create a new instance of a class in Java?",
@@ -57,7 +50,6 @@ public class QuestionBank {
             new String[]{"Instantiation", "Inheritance", "Compilation", "Serialization"}, 1));
         topicQuestions.put("Core Java", java);
 
-        // ── Software Engineering ───────────────────────────────────
         List<Question> se = new ArrayList<>();
         se.add(new Question(
             "Which software development model follows a linear sequential approach?",
@@ -94,7 +86,6 @@ public class QuestionBank {
             new String[]{"Adaptive", "Perfective", "Corrective", "Preventive"}, 2));
         topicQuestions.put("Software Engineering", se);
 
-        // ── Database Systems ───────────────────────────────────────
         List<Question> db = new ArrayList<>();
         db.add(new Question(
             "Which SQL command is used to retrieve data from a database?",
@@ -133,18 +124,11 @@ public class QuestionBank {
         topicQuestions.put("Database Systems", db);
     }
 
-    // ── Read Operations ─────────────────────────────────────────────
 
-    /**
-     * Returns the list of available quiz topics.
-     */
     public static List<String> getAvailableTopics() {
         return new ArrayList<>(topicQuestions.keySet());
     }
 
-    /**
-     * Returns a shuffled copy of questions for the given topic (used by students).
-     */
     public static List<Question> getQuestionsByTopic(String topic) {
         List<Question> original = topicQuestions.get(topic);
         if (original == null) return new ArrayList<>();
@@ -154,27 +138,17 @@ public class QuestionBank {
         return copy;
     }
 
-    /**
-     * Returns the original (unshuffled) list of questions for a topic (used by teachers).
-     */
     public static List<Question> getQuestionsByTopicOrdered(String topic) {
         List<Question> original = topicQuestions.get(topic);
         if (original == null) return new ArrayList<>();
         return original;
     }
 
-    // ── Write Operations (Teacher Portal) ───────────────────────────
 
-    /**
-     * Adds a new question to the specified topic.
-     */
     public static void addQuestion(String topic, Question question) {
         topicQuestions.computeIfAbsent(topic, k -> new ArrayList<>()).add(question);
     }
 
-    /**
-     * Removes a question at the given index from the specified topic.
-     */
     public static boolean removeQuestion(String topic, int index) {
         List<Question> list = topicQuestions.get(topic);
         if (list != null && index >= 0 && index < list.size()) {
@@ -184,9 +158,6 @@ public class QuestionBank {
         return false;
     }
 
-    /**
-     * Replaces a question at the given index in the specified topic.
-     */
     public static boolean updateQuestion(String topic, int index, Question updated) {
         List<Question> list = topicQuestions.get(topic);
         if (list != null && index >= 0 && index < list.size()) {
@@ -196,23 +167,14 @@ public class QuestionBank {
         return false;
     }
 
-    /**
-     * Adds a new topic with an empty question list.
-     */
     public static void addTopic(String topic) {
         topicQuestions.putIfAbsent(topic, new ArrayList<>());
     }
 
-    /**
-     * Removes a topic and all its questions.
-     */
     public static boolean removeTopic(String topic) {
         return topicQuestions.remove(topic) != null;
     }
 
-    /**
-     * Returns the total number of questions across all topics.
-     */
     public static int getTotalQuestionCount() {
         int count = 0;
         for (List<Question> list : topicQuestions.values()) {

@@ -9,9 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Clean result screen — score, percentage, pass/fail, and answer review.
- */
 public class ResultFrame extends BaseFrame {
 
     private QuizManager quizManager;
@@ -63,7 +60,6 @@ public class ResultFrame extends BaseFrame {
         double pct = quizManager.getPercentage();
         boolean passed = quizManager.isPassed();
 
-        // ── Title ──────────────────────────────────────────────────
         String titleText = passed ? "Congratulations!" : "Better Luck Next Time";
         JLabel title = createLabel(titleText, FONT_TITLE, passed ? ACCENT_SUCCESS : ACCENT_DANGER);
         title.setBounds(0, 25, 660, 32);
@@ -75,7 +71,6 @@ public class ResultFrame extends BaseFrame {
         topicInfo.setHorizontalAlignment(SwingConstants.CENTER);
         bgPanel.add(topicInfo);
 
-        // ── Score Cards ────────────────────────────────────────────
         JPanel scoreCard = createStatCard("Score", score + " / " + total, ACCENT_PRIMARY, 40, 95);
         bgPanel.add(scoreCard);
 
@@ -87,7 +82,6 @@ public class ResultFrame extends BaseFrame {
             passed ? ACCENT_SUCCESS : ACCENT_DANGER, 440, 95);
         bgPanel.add(statusCard);
 
-        // ── Breakdown ──────────────────────────────────────────────
         long unanswered = quizManager.getQuestions().stream().filter(q -> !q.isAnswered()).count();
         int wrong = total - score;
 
@@ -107,7 +101,6 @@ public class ResultFrame extends BaseFrame {
         skipLabel.setBounds(400, 13, 150, 22);
         breakdownCard.add(skipLabel);
 
-        // ── Action Buttons ─────────────────────────────────────────
         reviewButton = createStyledButton("Review Answers", BG_CARD, TEXT_PRIMARY);
         reviewButton.setBounds(40, 285, 180, 40);
         bgPanel.add(reviewButton);
@@ -120,7 +113,6 @@ public class ResultFrame extends BaseFrame {
         exitButton.setBounds(440, 285, 180, 40);
         bgPanel.add(exitButton);
 
-        // ── Review Panel (hidden by default) ───────────────────────
         reviewContainer = new JPanel();
         reviewContainer.setLayout(new BoxLayout(reviewContainer, BoxLayout.Y_AXIS));
         reviewContainer.setBackground(BG_PRIMARY);

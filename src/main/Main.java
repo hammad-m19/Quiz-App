@@ -3,10 +3,6 @@ package main;
 import ui.LoginFrame;
 import javax.swing.*;
 
-/**
- * Entry point of the Student Quiz Application.
- * Launches the LoginFrame on the Swing Event Dispatch Thread.
- */
 public class Main {
 
     public static void main(String[] args) {

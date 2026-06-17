@@ -14,10 +14,6 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Unified Admin Portal — single window with tabs for User Management,
- * Quiz & Question Management, and Student Results.
- */
 public class AdminDashboardFrame extends BaseFrame {
 
     private JPanel bgPanel;
@@ -71,7 +67,6 @@ public class AdminDashboardFrame extends BaseFrame {
         bgPanel.setBounds(0, 0, 900, 720);
         setContentPane(bgPanel);
 
-        // ── Header ─────────────────────────────────────────────────
         JLabel titleLabel = createLabel("Admin Control Portal", FONT_TITLE, TEXT_PRIMARY);
         titleLabel.setBounds(25, 15, 350, 32);
         bgPanel.add(titleLabel);
@@ -84,7 +79,6 @@ public class AdminDashboardFrame extends BaseFrame {
         logoutBtn.setBounds(760, 20, 110, 36);
         bgPanel.add(logoutBtn);
 
-        // ── JTabbedPane ────────────────────────────────────────────
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(FONT_BODY_BOLD);
         tabbedPane.setBounds(25, 80, 845, 580);
@@ -123,9 +117,6 @@ public class AdminDashboardFrame extends BaseFrame {
         });
     }
 
-    // ─────────────────────────────────────────────────────────────────
-    // ── Tab 1: User Management Panel ─────────────────────────────────
-    // ─────────────────────────────────────────────────────────────────
     private JPanel createUserManagementPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -428,9 +419,6 @@ public class AdminDashboardFrame extends BaseFrame {
         }
     }
 
-    // ─────────────────────────────────────────────────────────────────
-    // ── Tab 2: Quiz & Question Management Panel ──────────────────────
-    // ─────────────────────────────────────────────────────────────────
     private JPanel createQuizManagementPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -648,9 +636,6 @@ public class AdminDashboardFrame extends BaseFrame {
         loadQuestionsForSelectedTopic();
     }
 
-    // ─────────────────────────────────────────────────────────────────
-    // ── Tab 3: Student Results Panel ─────────────────────────────────
-    // ─────────────────────────────────────────────────────────────────
     private JPanel createResultsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(null);

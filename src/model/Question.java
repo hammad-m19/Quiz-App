@@ -1,9 +1,5 @@
 package model;
 
-/**
- * Represents a single multiple-choice quiz question.
- * Demonstrates OOP Concept: Encapsulation — private fields with getters/setters.
- */
 public class Question {
 
     private String questionText;
@@ -11,7 +7,6 @@ public class Question {
     private int correctOptionIndex; // 0-3
     private int selectedOptionIndex; // -1 means unanswered
 
-    // ── Constructor ──────────────────────────────────────────────────
     public Question(String questionText, String[] options, int correctOptionIndex) {
         this.questionText = questionText;
         this.options = options;
@@ -19,7 +14,6 @@ public class Question {
         this.selectedOptionIndex = -1; // unanswered by default
     }
 
-    // ── Getters ──────────────────────────────────────────────────────
     public String getQuestionText() {
         return questionText;
     }
@@ -36,7 +30,6 @@ public class Question {
         return selectedOptionIndex;
     }
 
-    // ── Setters ──────────────────────────────────────────────────────
     public void setQuestionText(String questionText) {
         this.questionText = questionText;
     }
@@ -53,17 +46,10 @@ public class Question {
         this.selectedOptionIndex = selectedOptionIndex;
     }
 
-    // ── Utility ──────────────────────────────────────────────────────
-    /**
-     * Returns true if the user answered this question correctly.
-     */
     public boolean isCorrect() {
         return selectedOptionIndex == correctOptionIndex;
     }
 
-    /**
-     * Returns true if the user has selected any answer.
-     */
     public boolean isAnswered() {
         return selectedOptionIndex != -1;
     }

@@ -7,11 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Clean, simple login screen — username, password, topic selection.
- * Routes students to QuizFrame, teachers to TeacherDashboardFrame,
- * and admins to AdminDashboardFrame.
- */
 public class LoginFrame extends BaseFrame {
 
     private JTextField usernameField;
@@ -36,7 +31,6 @@ public class LoginFrame extends BaseFrame {
         bg.setBounds(0, 0, 460, 620);
         setContentPane(bg);
 
-        // ── Title ──────────────────────────────────────────────────
         JLabel title = createLabel("Student Quiz App", FONT_TITLE, TEXT_PRIMARY);
         title.setBounds(0, 35, 460, 32);
         title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -47,7 +41,6 @@ public class LoginFrame extends BaseFrame {
         subtitle.setHorizontalAlignment(SwingConstants.CENTER);
         bg.add(subtitle);
 
-        // ── Login Card ─────────────────────────────────────────────
         JPanel card = createCardPanel();
         card.setBounds(50, 110, 360, 410);
         bg.add(card);

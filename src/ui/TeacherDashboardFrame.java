@@ -12,10 +12,6 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Teacher Dashboard — manage quiz topics and questions.
- * Clean, readable design with white cards and clear action buttons.
- */
 public class TeacherDashboardFrame extends BaseFrame {
 
     private JPanel bgPanel;
@@ -48,7 +44,6 @@ public class TeacherDashboardFrame extends BaseFrame {
         bgPanel.setBounds(0, 0, 880, 650);
         setContentPane(bgPanel);
 
-        // ── Header ─────────────────────────────────────────────────
         JLabel title = createLabel("Teacher Dashboard", FONT_TITLE, TEXT_PRIMARY);
         title.setBounds(25, 12, 350, 32);
         bgPanel.add(title);
@@ -61,7 +56,6 @@ public class TeacherDashboardFrame extends BaseFrame {
         logoutBtn.setBounds(740, 15, 110, 36);
         bgPanel.add(logoutBtn);
 
-        // ── Topic Bar ──────────────────────────────────────────────
         JPanel topicBar = createCardPanel();
         topicBar.setBounds(25, 72, 830, 55);
         bgPanel.add(topicBar);
@@ -87,8 +81,7 @@ public class TeacherDashboardFrame extends BaseFrame {
         deleteTopicBtn.setBounds(680, 10, 135, 36);
         topicBar.add(deleteTopicBtn);
 
-        // ── Questions Table ────────────────────────────────────────
-        String[] columns = {"#", "Question", "Option A", "Option B", "Option C", "Option D", "Ans"};
+        String[] columns = { "#", "Question", "Option A", "Option B", "Option C", "Option D", "Ans" };
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -132,7 +125,6 @@ public class TeacherDashboardFrame extends BaseFrame {
         scrollPane.getViewport().setBackground(Color.WHITE);
         bgPanel.add(scrollPane);
 
-        // ── Action Buttons ─────────────────────────────────────────
         addQuestionBtn = createStyledButton("+ Add Question", ACCENT_SUCCESS, Color.WHITE);
         addQuestionBtn.setBounds(25, 548, 170, 40);
         bgPanel.add(addQuestionBtn);
@@ -164,8 +156,8 @@ public class TeacherDashboardFrame extends BaseFrame {
 
         logoutBtn.addActionListener(e -> {
             int choice = JOptionPane.showConfirmDialog(this,
-                "Are you sure you want to logout?", "Logout",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    "Are you sure you want to logout?", "Logout",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (choice == JOptionPane.YES_OPTION) {
                 dispose();
                 new LoginFrame();
@@ -175,23 +167,24 @@ public class TeacherDashboardFrame extends BaseFrame {
 
     private void loadQuestionsForSelectedTopic() {
         String topic = (String) topicCombo.getSelectedItem();
-        if (topic == null) return;
+        if (topic == null)
+            return;
 
         tableModel.setRowCount(0);
         List<Question> questions = QuestionBank.getQuestionsByTopicOrdered(topic);
-        String[] letters = {"A", "B", "C", "D"};
+        String[] letters = { "A", "B", "C", "D" };
 
         for (int i = 0; i < questions.size(); i++) {
             Question q = questions.get(i);
             String[] opts = q.getOptions();
-            tableModel.addRow(new Object[]{
-                (i + 1),
-                q.getQuestionText(),
-                opts.length > 0 ? opts[0] : "",
-                opts.length > 1 ? opts[1] : "",
-                opts.length > 2 ? opts[2] : "",
-                opts.length > 3 ? opts[3] : "",
-                letters[q.getCorrectOptionIndex()]
+            tableModel.addRow(new Object[] {
+                    (i + 1),
+                    q.getQuestionText(),
+                    opts.length > 0 ? opts[0] : "",
+                    opts.length > 1 ? opts[1] : "",
+                    opts.length > 2 ? opts[2] : "",
+                    opts.length > 3 ? opts[3] : "",
+                    letters[q.getCorrectOptionIndex()]
             });
         }
         updateStats();
@@ -199,7 +192,8 @@ public class TeacherDashboardFrame extends BaseFrame {
 
     private void openAddQuestionDialog() {
         String topic = (String) topicCombo.getSelectedItem();
-        if (topic == null) return;
+        if (topic == null)
+            return;
 
         QuestionDialog dialog = new QuestionDialog(this, "Add New Question", null);
         dialog.setVisible(true);
@@ -215,7 +209,7 @@ public class TeacherDashboardFrame extends BaseFrame {
         int row = questionsTable.getSelectedRow();
         if (topic == null || row < 0) {
             JOptionPane.showMessageDialog(this, "Please select a question to edit.",
-                "No Selection", JOptionPane.WARNING_MESSAGE);
+                    "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -234,13 +228,13 @@ public class TeacherDashboardFrame extends BaseFrame {
         int row = questionsTable.getSelectedRow();
         if (topic == null || row < 0) {
             JOptionPane.showMessageDialog(this, "Please select a question to delete.",
-                "No Selection", JOptionPane.WARNING_MESSAGE);
+                    "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         int choice = JOptionPane.showConfirmDialog(this,
-            "Delete Question #" + (row + 1) + "?",
-            "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                "Delete Question #" + (row + 1) + "?",
+                "Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (choice == JOptionPane.YES_OPTION) {
             QuestionBank.removeQuestion(topic, row);
             loadQuestionsForSelectedTopic();
@@ -249,12 +243,12 @@ public class TeacherDashboardFrame extends BaseFrame {
 
     private void openAddTopicDialog() {
         String name = JOptionPane.showInputDialog(this,
-            "Enter new topic name:", "Add Topic", JOptionPane.PLAIN_MESSAGE);
+                "Enter new topic name:", "Add Topic", JOptionPane.PLAIN_MESSAGE);
         if (name != null && !name.trim().isEmpty()) {
             String trimmed = name.trim();
             if (QuestionBank.getAvailableTopics().contains(trimmed)) {
                 JOptionPane.showMessageDialog(this, "Topic already exists.",
-                    "Duplicate", JOptionPane.WARNING_MESSAGE);
+                        "Duplicate", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             QuestionBank.addTopic(trimmed);
@@ -264,11 +258,12 @@ public class TeacherDashboardFrame extends BaseFrame {
 
     private void deleteSelectedTopic() {
         String topic = (String) topicCombo.getSelectedItem();
-        if (topic == null) return;
+        if (topic == null)
+            return;
 
         int choice = JOptionPane.showConfirmDialog(this,
-            "Delete topic '" + topic + "' and ALL its questions?",
-            "Delete Topic", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                "Delete topic '" + topic + "' and ALL its questions?",
+                "Delete Topic", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (choice == JOptionPane.YES_OPTION) {
             QuestionBank.removeTopic(topic);
             refreshTopicCombo(null);
@@ -278,7 +273,8 @@ public class TeacherDashboardFrame extends BaseFrame {
     private void refreshTopicCombo(String selectTopic) {
         topicCombo.removeAllItems();
         List<String> topics = QuestionBank.getAvailableTopics();
-        for (String t : topics) topicCombo.addItem(t);
+        for (String t : topics)
+            topicCombo.addItem(t);
         if (selectTopic != null && topics.contains(selectTopic)) {
             topicCombo.setSelectedItem(selectTopic);
         }
@@ -291,10 +287,9 @@ public class TeacherDashboardFrame extends BaseFrame {
         String topic = (String) topicCombo.getSelectedItem();
         int topicQ = topic != null ? QuestionBank.getQuestionsByTopicOrdered(topic).size() : 0;
         statsLabel.setText("Topics: " + topicCount + "   |   Total Questions: " + totalQ
-            + "   |   Current Topic: " + topicQ + " questions");
+                + "   |   Current Topic: " + topicQ + " questions");
     }
 
-    // ── Question Add/Edit Dialog ────────────────────────────────────
     static class QuestionDialog extends JDialog {
 
         private JTextField questionField;
@@ -329,13 +324,13 @@ public class TeacherDashboardFrame extends BaseFrame {
             questionField.setFont(bodyFont);
             questionField.setForeground(textCol);
             questionField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(borderCol, 1),
-                BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+                    BorderFactory.createLineBorder(borderCol, 1),
+                    BorderFactory.createEmptyBorder(6, 10, 6, 10)));
             questionField.setBounds(20, 38, 450, 36);
             panel.add(questionField);
 
             // Options
-            String[] labels = {"Option A:", "Option B:", "Option C:", "Option D:"};
+            String[] labels = { "Option A:", "Option B:", "Option C:", "Option D:" };
             optionFields = new JTextField[4];
             for (int i = 0; i < 4; i++) {
                 JLabel oLabel = new JLabel(labels[i]);
@@ -348,8 +343,8 @@ public class TeacherDashboardFrame extends BaseFrame {
                 optionFields[i].setFont(bodyFont);
                 optionFields[i].setForeground(textCol);
                 optionFields[i].setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(borderCol, 1),
-                    BorderFactory.createEmptyBorder(6, 10, 6, 10)));
+                        BorderFactory.createLineBorder(borderCol, 1),
+                        BorderFactory.createEmptyBorder(6, 10, 6, 10)));
                 optionFields[i].setBounds(115, 84 + i * 52, 355, 34);
                 panel.add(optionFields[i]);
             }
@@ -361,7 +356,7 @@ public class TeacherDashboardFrame extends BaseFrame {
             cLabel.setBounds(20, 304, 80, 18);
             panel.add(cLabel);
 
-            correctCombo = new JComboBox<>(new String[]{"A", "B", "C", "D"});
+            correctCombo = new JComboBox<>(new String[] { "A", "B", "C", "D" });
             correctCombo.setFont(bodyFont);
             correctCombo.setBounds(115, 300, 80, 32);
             panel.add(correctCombo);
@@ -409,30 +404,32 @@ public class TeacherDashboardFrame extends BaseFrame {
         private boolean validateFields() {
             if (questionField.getText().trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Question text cannot be empty.",
-                    "Error", JOptionPane.WARNING_MESSAGE);
+                        "Error", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
             for (int i = 0; i < 4; i++) {
                 if (optionFields[i].getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this,
-                        "Option " + (char)('A' + i) + " cannot be empty.",
-                        "Error", JOptionPane.WARNING_MESSAGE);
+                            "Option " + (char) ('A' + i) + " cannot be empty.",
+                            "Error", JOptionPane.WARNING_MESSAGE);
                     return false;
                 }
             }
             return true;
         }
 
-        public boolean isConfirmed() { return confirmed; }
+        public boolean isConfirmed() {
+            return confirmed;
+        }
 
         public Question getQuestion() {
             String[] options = new String[4];
-            for (int i = 0; i < 4; i++) options[i] = optionFields[i].getText().trim();
+            for (int i = 0; i < 4; i++)
+                options[i] = optionFields[i].getText().trim();
             return new Question(questionField.getText().trim(), options, correctCombo.getSelectedIndex());
         }
     }
 
-    // ── Student Results Dialog ───────────────────────────────────────
     private void openResultsDialog() {
         JDialog dialog = new JDialog(this, "Student Results", true);
         dialog.setSize(750, 500);
@@ -466,7 +463,7 @@ public class TeacherDashboardFrame extends BaseFrame {
         panel.add(filterCombo);
 
         // Results table
-        String[] columns = {"#", "Student", "Topic", "Score", "Percentage", "Status", "Date/Time"};
+        String[] columns = { "#", "Student", "Topic", "Score", "Percentage", "Status", "Date/Time" };
         DefaultTableModel resultsTableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -512,7 +509,7 @@ public class TeacherDashboardFrame extends BaseFrame {
             public Component getTableCellRendererComponent(JTable table, Object value,
                     boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value,
-                    isSelected, hasFocus, row, column);
+                        isSelected, hasFocus, row, column);
                 setHorizontalAlignment(SwingConstants.CENTER);
                 if (!isSelected) {
                     if ("PASSED".equals(value)) {
@@ -554,20 +551,20 @@ public class TeacherDashboardFrame extends BaseFrame {
             }
             for (int i = 0; i < resultsList.size(); i++) {
                 StudentResult r = resultsList.get(i);
-                resultsTableModel.addRow(new Object[]{
-                    (i + 1),
-                    r.getStudentName(),
-                    r.getTopic(),
-                    r.getScore() + "/" + r.getTotalQuestions(),
-                    String.format("%.0f%%", r.getPercentage()),
-                    r.isPassed() ? "PASSED" : "FAILED",
-                    r.getTimestamp()
+                resultsTableModel.addRow(new Object[] {
+                        (i + 1),
+                        r.getStudentName(),
+                        r.getTopic(),
+                        r.getScore() + "/" + r.getTotalQuestions(),
+                        String.format("%.0f%%", r.getPercentage()),
+                        r.isPassed() ? "PASSED" : "FAILED",
+                        r.getTimestamp()
                 });
             }
             int total = resultsList.size();
             long passed = resultsList.stream().filter(StudentResult::isPassed).count();
             summaryLabel.setText("Total attempts: " + total + "   |   Passed: " + passed
-                + "   |   Failed: " + (total - passed));
+                    + "   |   Failed: " + (total - passed));
         };
 
         // Initial load

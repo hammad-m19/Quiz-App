@@ -5,10 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * In-memory store for all application users.
- * Seeds default admin, teacher, and student accounts on startup.
- */
 public class UserStore {
 
     private static final Map<String, User> users = new LinkedHashMap<>();
