@@ -21,7 +21,7 @@ public class LoginFrame extends BaseFrame {
     private JLabel errorLabel;
 
     public LoginFrame() {
-        super("Student Quiz Application", 460, 600);
+        super("Student Quiz Application", 460, 620);
         initializeUI();
         setupListeners();
         setVisible(true);
@@ -33,7 +33,7 @@ public class LoginFrame extends BaseFrame {
         JPanel bg = new JPanel();
         bg.setLayout(null);
         bg.setBackground(BG_PRIMARY);
-        bg.setBounds(0, 0, 460, 600);
+        bg.setBounds(0, 0, 460, 620);
         setContentPane(bg);
 
         // ── Title ──────────────────────────────────────────────────
@@ -49,7 +49,7 @@ public class LoginFrame extends BaseFrame {
 
         // ── Login Card ─────────────────────────────────────────────
         JPanel card = createCardPanel();
-        card.setBounds(50, 110, 360, 380);
+        card.setBounds(50, 110, 360, 410);
         bg.add(card);
 
         // Username
@@ -96,17 +96,17 @@ public class LoginFrame extends BaseFrame {
         card.add(loginButton);
 
         // Credentials hints
-        JLabel hint1 = createLabel("Student: student / password123", FONT_SMALL, TEXT_MUTED);
+        JLabel hint1 = createLabel("Student: student / 123456", FONT_SMALL, TEXT_MUTED);
         hint1.setBounds(25, 330, 310, 16);
         hint1.setHorizontalAlignment(SwingConstants.CENTER);
         card.add(hint1);
 
-        JLabel hint2 = createLabel("Teacher: teacher / admin123", FONT_SMALL, TEXT_MUTED);
+        JLabel hint2 = createLabel("Teacher: teacher / 123456", FONT_SMALL, TEXT_MUTED);
         hint2.setBounds(25, 348, 310, 16);
         hint2.setHorizontalAlignment(SwingConstants.CENTER);
         card.add(hint2);
 
-        JLabel hint3 = createLabel("Admin: admin / admin123", FONT_SMALL, TEXT_MUTED);
+        JLabel hint3 = createLabel("Admin: admin / 123456", FONT_SMALL, TEXT_MUTED);
         hint3.setBounds(25, 366, 310, 16);
         hint3.setHorizontalAlignment(SwingConstants.CENTER);
         card.add(hint3);

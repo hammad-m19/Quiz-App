@@ -14,9 +14,9 @@ public class UserStore {
     private static final Map<String, User> users = new LinkedHashMap<>();
 
     static {
-        users.put("admin", new User("admin", "admin123", "admin"));
-        users.put("teacher", new User("teacher", "admin123", "teacher"));
-        users.put("student", new User("student", "password123", "student"));
+        users.put("admin", new User("admin", "123456", "admin"));
+        users.put("teacher", new User("teacher", "123456", "teacher"));
+        users.put("student", new User("student", "123456", "student"));
     }
 
     public static User authenticate(String username, String password) {

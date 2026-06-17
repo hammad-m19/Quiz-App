@@ -295,7 +295,7 @@ public class TeacherDashboardFrame extends BaseFrame {
     }
 
     // ── Question Add/Edit Dialog ────────────────────────────────────
-    private static class QuestionDialog extends JDialog {
+    static class QuestionDialog extends JDialog {
 
         private JTextField questionField;
         private JTextField[] optionFields;
