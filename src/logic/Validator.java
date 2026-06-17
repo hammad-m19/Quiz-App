@@ -21,6 +21,9 @@ public class Validator {
      * Validates login with String password. Returns true for any valid role.
      */
     public static boolean validateLogin(String username, String password) {
+        if (username == null || password == null) {
+            return false;
+        }
         return UserStore.authenticate(username, password) != null;
     }
 
@@ -42,9 +45,12 @@ public class Validator {
      * Returns ROLE_STUDENT, ROLE_TEACHER, ROLE_ADMIN, or ROLE_INVALID.
      */
     public static String getRole(String username, String password) {
+        if (username == null || password == null) return ROLE_INVALID;
         User user = UserStore.authenticate(username, password);
-        if (user == null) return ROLE_INVALID;
-        return user.getRole();
+        if (user != null) {
+            return user.getRole();
+        }
+        return ROLE_INVALID;
     }
 
     /**
