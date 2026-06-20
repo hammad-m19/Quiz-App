@@ -276,3 +276,4 @@ public class QuizFrame extends BaseFrame implements TimerCallback {
         new ResultFrame(quizManager, showReview, studentName);
     }
 }
+
