@@ -576,3 +576,4 @@ public class TeacherDashboardFrame extends BaseFrame {
         dialog.setVisible(true);
     }
 }
+
